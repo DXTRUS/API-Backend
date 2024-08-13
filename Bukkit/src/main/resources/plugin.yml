@@ -1,0 +1,4 @@
+name: Bukkit
+version: '${version}'
+main: us.dxtrus.api.APIBukkitBootstrapper
+api-version: '1.20'
