@@ -1,4 +1,0 @@
-name: Common
-version: '${version}'
-main: us.dxtrus.api.Common
-api-version: '1.19'
