@@ -6,10 +6,7 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Plugin;
 import org.slf4j.Logger;
 
-@Plugin(
-        id = "api",
-        name = "API"
-)
+@Plugin(id = "api")
 public class APIVelocityBootstrapper {
 
     @Inject private Logger logger;

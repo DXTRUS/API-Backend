@@ -1,2 +1,2 @@
 rootProject.name = 'DxtrusAPIBackend'
-include('Common', 'Bukkit', 'Velocity')
+include('Common', 'Bukkit', 'Velocity', 'Server')

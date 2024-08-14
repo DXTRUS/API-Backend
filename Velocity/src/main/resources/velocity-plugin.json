@@ -1,7 +1,7 @@
 {
   "id": "api",
   "name": "API",
-  "version": "{}",
+  "version": "${version}",
   "authors": [ "Preva1l" ],
   "main": "us.dxtrus.api.APIVelocityBootstrapper"
 }

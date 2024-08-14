@@ -1,8 +1,8 @@
-package us.dxtrus.api.server;
+package us.dxtrus.api.models.server;
 
 import org.jetbrains.annotations.NotNull;
-import us.dxtrus.api.database.Serializable;
-import us.dxtrus.api.user.User;
+import us.dxtrus.api.models.Serializable;
+import us.dxtrus.api.models.user.User;
 
 import java.util.List;
 

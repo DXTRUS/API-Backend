@@ -4,8 +4,7 @@ import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class APIBukkitBootstrapper extends JavaPlugin {
-    @Getter
-    private static APIBukkitBootstrapper instance;
+    @Getter private static APIBukkitBootstrapper instance;
 
     @Override
     public void onEnable() {
