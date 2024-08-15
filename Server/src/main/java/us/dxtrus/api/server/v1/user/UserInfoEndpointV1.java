@@ -41,7 +41,7 @@ public class UserInfoEndpointV1 implements UserInfoEndpoint {
                             .entity("User not found with UUID %s".formatted(query))
                             .build();
                 }
-                return Response.ok(user.get().toJson(), MediaType.APPLICATION_JSON).build();
+                return Response.ok(user.get().toJson()).build();
             } catch (IllegalArgumentException e) {
                 return attemptSearch(query);
             }
@@ -63,6 +63,6 @@ public class UserInfoEndpointV1 implements UserInfoEndpoint {
                     .entity("User not found with Name %s".formatted(name))
                     .build();
         }
-        return Response.ok(user.get().toJson(), MediaType.APPLICATION_JSON).build();
+        return Response.ok(user.get().toJson()).build();
     }
 }

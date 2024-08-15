@@ -6,7 +6,7 @@ import us.dxtrus.api.models.Serializable;
 import java.util.UUID;
 
 /**
- * Represents a user that is currently online, either frontend or backend depending on the impl.
+ * Represents a user that is stored in the database.
  */
 public interface User extends Serializable {
     /**
@@ -36,4 +36,13 @@ public interface User extends Serializable {
      */
     @NotNull
     String getCurrentServer();
+
+    /**
+     * Whether the player is connected to the server.
+     *
+     * @return true if the player is online, else false
+     */
+    boolean isOnline();
+
+    String
 }
