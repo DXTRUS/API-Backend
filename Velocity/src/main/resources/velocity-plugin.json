@@ -3,5 +3,11 @@
   "name": "API",
   "version": "${version}",
   "authors": [ "Preva1l" ],
-  "main": "us.dxtrus.api.APIVelocityBootstrapper"
+  "main": "us.dxtrus.api.APIVelocityBootstrapper",
+  "dependencies": [
+    {
+      "id": "commons",
+      "optional": false
+    }
+  ]
 }

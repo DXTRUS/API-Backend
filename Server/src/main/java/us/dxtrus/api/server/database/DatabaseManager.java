@@ -1,7 +1,10 @@
-package us.dxtrus.api.database;
+package us.dxtrus.api.server.database;
 
 import us.dxtrus.api.LogManager;
-import us.dxtrus.api.database.handlers.MongoHandler;
+import us.dxtrus.api.database.DatabaseType;
+import us.dxtrus.api.server.database.handlers.MongoHandler;
+import us.dxtrus.commons.database.DatabaseHandler;
+import us.dxtrus.commons.database.DatabaseObject;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +28,7 @@ public final class DatabaseManager {
         LogManager.debug("Connected to Database and populated caches!");
     }
 
-    public <T> CompletableFuture<List<T>> getAll(Class<T> clazz) {
+    public <T extends DatabaseObject> CompletableFuture<List<T>> getAll(Class<T> clazz) {
         if (!isConnected()) {
             LogManager.severe("Tried to perform database action when the database is not connected!");
             return CompletableFuture.completedFuture(List.of());
@@ -33,7 +36,7 @@ public final class DatabaseManager {
         return CompletableFuture.supplyAsync(() -> handler.getAll(clazz));
     }
 
-    public <T> CompletableFuture<Optional<T>> get(Class<T> clazz, UUID id) {
+    public <T extends DatabaseObject> CompletableFuture<Optional<T>> get(Class<T> clazz, UUID id) {
         if (!isConnected()) {
             LogManager.severe("Tried to perform database action when the database is not connected!");
             return CompletableFuture.completedFuture(Optional.empty());
@@ -47,7 +50,7 @@ public final class DatabaseManager {
      * @param name the name, either a username or a servername.
      * @return a completable future of the optional object or an empty optional
      */
-    public <T> CompletableFuture<Optional<T>> search(Class<T> clazz, String name) {
+    public <T extends DatabaseObject> CompletableFuture<Optional<T>> search(Class<T> clazz, String name) {
         if (!isConnected()) {
             LogManager.severe("Tried to perform database action when the database is not connected!");
             return CompletableFuture.completedFuture(Optional.empty());
@@ -55,7 +58,7 @@ public final class DatabaseManager {
         return CompletableFuture.supplyAsync(() -> handler.search(clazz, name));
     }
 
-    public <T> CompletableFuture<Void> save(Class<T> clazz, T t) {
+    public <T extends DatabaseObject> CompletableFuture<Void> save(Class<T> clazz, T t) {
         if (!isConnected()) {
             LogManager.severe("Tried to perform database action when the database is not connected!");
             return CompletableFuture.completedFuture(null);
@@ -66,7 +69,7 @@ public final class DatabaseManager {
         });
     }
 
-    public <T> CompletableFuture<Void> delete(Class<T> clazz, T t) {
+    public <T extends DatabaseObject> CompletableFuture<Void> delete(Class<T> clazz, T t) {
         if (!isConnected()) {
             LogManager.severe("Tried to perform database action when the database is not connected!");
             return CompletableFuture.completedFuture(null);
@@ -77,7 +80,7 @@ public final class DatabaseManager {
         });
     }
 
-    public <T> CompletableFuture<Void> update(Class<T> clazz, T t, String[] params) {
+    public <T extends DatabaseObject> CompletableFuture<Void> update(Class<T> clazz, T t, String[] params) {
         if (!isConnected()) {
             LogManager.severe("Tried to perform database action when the database is not connected!");
             return CompletableFuture.completedFuture(null);

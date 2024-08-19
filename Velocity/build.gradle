@@ -4,8 +4,10 @@ repositories {
 
 dependencies {
     implementation project(":Common")
+    compileOnly "us.dxtrus.commons:velocity:${rootProject.ext.commons_version}"
 
     compileOnly "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
+    //annotationProcessor "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
 
 }
 

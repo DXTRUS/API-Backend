@@ -43,6 +43,4 @@ public interface User extends Serializable {
      * @return true if the player is online, else false
      */
     boolean isOnline();
-
-    String
 }

@@ -3,7 +3,6 @@ package us.dxtrus.api;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import us.dxtrus.api.models.server.BackendServer;
-import us.dxtrus.api.models.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +34,14 @@ public class BackendServerImpl implements BackendServer {
     }
 
     @Override
-    public List<User> getPlayers() {
-        List<User> online = new ArrayList<>();
-        Bukkit.getOnlinePlayers().forEach(player -> online.add(BackendPlayerImpl.adapt(player)));
+    public List<String> getPlayers() {
+        List<String> online = new ArrayList<>();
+        Bukkit.getOnlinePlayers().forEach(player -> online.add(player.getName()));
         return online;
+    }
+
+    @Override
+    public @NotNull String toJson() {
+        return "";
     }
 }

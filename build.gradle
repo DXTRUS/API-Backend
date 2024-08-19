@@ -6,6 +6,10 @@ plugins {
 group = 'us.dxtrus'
 version = "1.0.0"
 
+ext {
+    set 'commons_version', "2.1.3"
+}
+
 allprojects {
     apply plugin: 'io.github.goooler.shadow'
     apply plugin: 'maven-publish'
@@ -21,6 +25,14 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven {
+            name "dxtrusReleases"
+            url 'https://maven.asdev.info/releases'
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
     }
 
     dependencies {

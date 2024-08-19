@@ -1,5 +1,10 @@
 package us.dxtrus.api.server.v1.user;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -8,44 +13,59 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.NotNull;
-import us.dxtrus.api.database.DatabaseManager;
-import us.dxtrus.api.models.user.DatabaseUser;
 import us.dxtrus.api.models.user.User;
 import us.dxtrus.api.server.base.user.UserInfoEndpoint;
+import us.dxtrus.api.server.configuration.ApplicationConfig;
+import us.dxtrus.api.server.database.CacheManager;
+import us.dxtrus.api.server.database.DatabaseManager;
+import us.dxtrus.api.server.errors.CommonResults;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
+@Tag(name = "User Information", description = "Endpoints to do with user data across the network.")
 @Path("/v1/user")
 public class UserInfoEndpointV1 implements UserInfoEndpoint {
 
-    /**
-     * Get a {@link User} from our database.
-     *
-     * @param query the username or UUID of the player.
-     * @return json response of the user's data.
-     */
+    @Operation(
+            summary = "Gets a users information"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The users information.",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = User.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "The user was not found."
+    )
     @GET
     @Path("/{query}")
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public CompletableFuture<Response> getUser(@PathParam("query") String query) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                UUID uuid = UUID.fromString(query);
-                Optional<User> user = DatabaseManager.getInstance().get(User.class, uuid).join();
-                if (user.isEmpty()) {
-                    return Response
-                            .status(Response.Status.NOT_FOUND)
-                            .entity("User not found with UUID %s".formatted(query))
-                            .build();
+    public Response getUser(@PathParam("query") String query) {
+        if (!ApplicationConfig.getInstance().getEndpoints().getUserInfo().isEnabled()) {
+            return CommonResults.ENDPOINT_DISABLED;
+        }
+
+        try {
+            UUID uuid = UUID.fromString(query);
+            Optional<User> cachedGetUser = CacheManager.getInstance().getUser(uuid);
+            if (cachedGetUser.isEmpty()) {
+                Optional<User> dbUser = DatabaseManager.getInstance().get(User.class, uuid).join();
+                if (dbUser.isEmpty()) {
+                    return CommonResults.NOT_FOUND("User not found with the uuid %s.".formatted(uuid));
                 }
-                return Response.ok(user.get().toJson()).build();
-            } catch (IllegalArgumentException e) {
-                return attemptSearch(query);
+                CacheManager.getInstance().cacheUser(dbUser.get());
+                return Response.ok(dbUser.get().toJson(), MediaType.APPLICATION_JSON).build();
             }
-        });
+            return Response.ok(cachedGetUser.get().toJson(), MediaType.APPLICATION_JSON).build();
+        } catch (IllegalArgumentException e) {
+            return attemptSearch(query);
+        }
     }
 
     /**
@@ -56,13 +76,15 @@ public class UserInfoEndpointV1 implements UserInfoEndpoint {
      */
     @Blocking
     private Response attemptSearch(@NotNull String name) {
-        Optional<User> user = DatabaseManager.getInstance().search(User.class, name).join();
-        if (user.isEmpty()) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .entity("User not found with Name %s".formatted(name))
-                    .build();
+        Optional<User> cachedGetUser = CacheManager.getInstance().searchUser(name);
+        if (cachedGetUser.isEmpty()) {
+            Optional<User> dbUser = DatabaseManager.getInstance().search(User.class, name).join();
+            if (dbUser.isEmpty()) {
+                return CommonResults.NOT_FOUND("User not found with the username %s.".formatted(name));
+            }
+            CacheManager.getInstance().cacheUser(dbUser.get());
+            return Response.ok(dbUser.get().toJson(), MediaType.APPLICATION_JSON).build();
         }
-        return Response.ok(user.get().toJson()).build();
+        return Response.ok(cachedGetUser.get().toJson(), MediaType.APPLICATION_JSON).build();
     }
 }

@@ -4,19 +4,22 @@ repositories {
 }
 
 dependencies {
-    // Support mini message format
+    compileOnly 'com.google.code.gson:gson:2.10.1'
+
+    compileOnly "us.dxtrus.commons:base:${rootProject.ext.commons_version}"
+
     compileOnly 'net.kyori:adventure-text-minimessage:4.17.0'
     compileOnly 'net.kyori:adventure-api:4.17.0'
     compileOnly 'net.kyori:adventure-platform-bukkit:4.3.3'
 
     // Database
-    implementation 'com.zaxxer:HikariCP:5.1.0'
+    compileOnly 'com.zaxxer:HikariCP:5.1.0'
     compileOnly 'org.xerial:sqlite-jdbc:3.45.2.0'
     compileOnly 'com.mysql:mysql-connector-j:8.3.0'
     compileOnly('org.mariadb.jdbc:mariadb-java-client:3.3.3') {
         exclude group: '*', module: '*'
     }
-    compileOnly 'org.mongodb:mongodb-driver-sync:5.0.0'
+    compileOnly 'org.mongodb:mongodb-driver-sync:5.1.2'
 }
 
 shadowJar {
