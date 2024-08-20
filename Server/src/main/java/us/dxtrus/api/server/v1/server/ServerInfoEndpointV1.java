@@ -38,10 +38,7 @@ public class ServerInfoEndpointV1 implements ServerInfoEndpoint {
 
         Optional<BackendServer> dbUser = DatabaseManager.getInstance().search(BackendServer.class, server).join();
         if (dbUser.isEmpty()) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .entity("{\"code\": \"404\"\"message\": \"Server not found!\"}")
-                    .build();
+            return CommonResults.NOT_FOUND("Could not find backend server " + server);
         }
         CacheManager.getInstance().cacheServer(dbUser.get());
         return Response.ok(dbUser.get().toJson(), MediaType.APPLICATION_JSON).build();

@@ -15,8 +15,8 @@ public class CacheManager {
 
     private final Cache<UUID, User> usersCache;
     private final Cache<String, User> yuckyUsersCache;
-    private final Cache<UUID, BackendServer> serverCache;
-    private final Cache<UUID, ProxyServer> proxyCache;
+    private final Cache<String, BackendServer> serverCache;
+    private final Cache<String, ProxyServer> proxyCache;
 
     private CacheManager() {
         ApplicationConfig.Endpoints endpointConfig = ApplicationConfig.getInstance().getEndpoints();
@@ -38,6 +38,22 @@ public class CacheManager {
 
     public Optional<User> searchUser(String name) {
         return Optional.ofNullable(yuckyUsersCache.getIfPresent(name));
+    }
+
+    public void cacheServer(BackendServer server) {
+        serverCache.put(server.getName(), server);
+    }
+
+    public Optional<BackendServer> getServer(String serverName) {
+        return Optional.ofNullable(serverCache.getIfPresent(serverName));
+    }
+
+    public void cacheProxy(ProxyServer server) {
+        proxyCache.put(server.getName(), server);
+    }
+
+    public Optional<ProxyServer> getProxy(String serverName) {
+        return Optional.ofNullable(proxyCache.getIfPresent(serverName));
     }
 
     public static CacheManager getInstance() {
