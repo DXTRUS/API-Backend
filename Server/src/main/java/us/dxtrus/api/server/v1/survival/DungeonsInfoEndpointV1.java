@@ -12,11 +12,11 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import us.dxtrus.api.models.dungeons.Dungeon;
-import us.dxtrus.api.models.user.User;
 import us.dxtrus.api.server.base.survival.DungeonsInfoEndpoint;
+import us.dxtrus.api.server.errors.CommonResults;
 
-@Tag(name = "User Information", description = "Endpoints to do with user data across the network.")
-@Path("/v1/user")
+@Tag(name = "Dungeon Information", description = "Endpoints to do with survival dungeons")
+@Path("/v1/survival/dungeons")
 public class DungeonsInfoEndpointV1 implements DungeonsInfoEndpoint {
     @Operation(
             summary = "Gets information on a dungeon."
@@ -26,7 +26,7 @@ public class DungeonsInfoEndpointV1 implements DungeonsInfoEndpoint {
             description = "The dungeon information.",
             content = @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = User.class)
+                    schema = @Schema(implementation = Dungeon.class)
             )
     )
     @ApiResponse(
@@ -57,20 +57,26 @@ public class DungeonsInfoEndpointV1 implements DungeonsInfoEndpoint {
             description = "The dungeon was not found."
     )
     @GET
-    @Path("/{dungeon}")
+    @Path("/{dungeonName}")
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response getDungeon(@PathParam("dungeon") String dungeon) {
-        return null;
+    public Response getDungeon(@PathParam("dungeonName") String dungeon) {
+        return CommonResults.NOT_FOUND("Dungeon not found with the name %s.".formatted(dungeon));
     }
 
+    @GET
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public Response getAllDungeons() {
-        return null;
+        return Response.ok("{}", MediaType.APPLICATION_JSON).build();
     }
 
+    @GET
+    @Path("/active")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public Response getActiveDungeons() {
-        return null;
+        return Response.ok("{}", MediaType.APPLICATION_JSON).build();
     }
 }
