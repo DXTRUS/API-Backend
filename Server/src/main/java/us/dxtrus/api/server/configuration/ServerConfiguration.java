@@ -2,6 +2,8 @@ package us.dxtrus.api.server.configuration;
 
 import io.swagger.v3.jaxrs2.SwaggerSerializers;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 import us.dxtrus.api.server.database.DatabaseManager;
@@ -12,6 +14,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "DXTRUS API",
+                version = "1.0",
+                description = "The public facing API for dxtrus."
+        )
+)
 @ApplicationPath("/")
 public class ServerConfiguration extends Application {
     @Override
@@ -24,8 +33,8 @@ public class ServerConfiguration extends Application {
                 UserInfoEndpointV1.class,
 
                 // Swagger api docs
-                OpenApiResource.class,
                 SwaggerSerializers.class,
+                OpenApiResource.class,
 
                 NotFoundHandler.class
         ).forEach(classes::add);
