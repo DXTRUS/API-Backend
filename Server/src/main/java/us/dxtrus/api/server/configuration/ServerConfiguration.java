@@ -3,7 +3,10 @@ package us.dxtrus.api.server.configuration;
 import io.swagger.v3.jaxrs2.SwaggerSerializers;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 import us.dxtrus.api.server.database.DatabaseManager;
@@ -18,7 +21,8 @@ import java.util.stream.Stream;
         info = @Info(
                 title = "DXTRUS API",
                 version = "1.0",
-                description = "The public facing API for dxtrus."
+                description = "The public facing API for dxtrus.",
+                contact = @Contact(name = "Preva1l", url = "https://preva1l.info/")
         )
 )
 @ApplicationPath("/")
