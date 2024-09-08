@@ -5,7 +5,6 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
-import us.dxtrus.api.models.user.DatabaseUser;
 import us.dxtrus.api.models.user.User;
 import us.dxtrus.commons.database.dao.Dao;
 import us.dxtrus.commons.database.mongo.CollectionHelper;
@@ -36,7 +35,7 @@ public class UserDao implements Dao<User> {
             final String proxy = doc.getString("proxy");
             final String server = doc.getString("server");
             final boolean online = doc.getBoolean("online");
-            return Optional.of(new DatabaseUser(name, UUID.fromString(uuid), proxy, server, online));
+            return Optional.of(new User(name, UUID.fromString(uuid), proxy, server, online));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +58,7 @@ public class UserDao implements Dao<User> {
             final String proxy = doc.getString("proxy");
             final String server = doc.getString("server");
             final boolean online = doc.getBoolean("online");
-            return Optional.of(new DatabaseUser(name, UUID.fromString(uuid), proxy, server, online));
+            return Optional.of(new User(name, UUID.fromString(uuid), proxy, server, online));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,7 +82,7 @@ public class UserDao implements Dao<User> {
                 final String proxy = doc.getString("proxy");
                 final String server = doc.getString("server");
                 final boolean online = doc.getBoolean("online");
-                users.add(new DatabaseUser(name, UUID.fromString(uuid), proxy, server, online));
+                users.add(new User(name, UUID.fromString(uuid), proxy, server, online));
             }
         } catch (Exception e) {
             e.printStackTrace();

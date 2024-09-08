@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import us.dxtrus.api.models.Serializable;
-import us.dxtrus.api.models.user.User;
+import us.dxtrus.api.models.user.SimpleUser;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class ActiveDungeon implements Serializable {
     @Expose
     private final String state;
     @Expose
-    private final List<User> challengers;
+    private final List<SimpleUser> challengers;
 
     @Override
     public @NotNull String toJson() {

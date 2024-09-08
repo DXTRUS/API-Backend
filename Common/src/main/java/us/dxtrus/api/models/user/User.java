@@ -1,46 +1,30 @@
 package us.dxtrus.api.models.user;
 
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 import us.dxtrus.api.models.Serializable;
 
 import java.util.UUID;
 
 /**
- * Represents a user that is stored in the database.
+ * Represents a user.
  */
-public interface User extends Serializable {
-    /**
-     * Get the player's username.
-     * @return the players username
-     */
-    @NotNull
-    String getName();
+@Getter
+public class User extends SimpleUser implements Serializable {
+    @Expose
+    @SerializedName("current_proxy")
+    private final String currentProxy;
+    @Expose
+    @SerializedName("current_server")
+    private final String currentServer;
+    @Expose
+    private final boolean online;
 
-    /**
-     * Get the players UUID
-     * @return an uuid that is unique to the player.
-     */
-    @NotNull
-    UUID getUniqueId();
-
-    /**
-     * Get the current proxy of the player.
-     * @return the proxy server the player is on.
-     */
-    @NotNull
-    String getCurrentProxy();
-
-    /**
-     * Get the current server of the player.
-     * @return the backend server the player is on.
-     */
-    @NotNull
-    String getCurrentServer();
-
-    /**
-     * Whether the player is connected to the server.
-     *
-     * @return true if the player is online, else false
-     */
-    boolean isOnline();
+    public User(String name, UUID uniqueId, String currentProxy, String currentServer, boolean online) {
+        super(name, uniqueId);
+        this.currentProxy = currentProxy;
+        this.currentServer = currentServer;
+        this.online = online;
+    }
 }
