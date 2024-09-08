@@ -11,6 +11,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import us.dxtrus.api.models.dungeons.ActiveDungeon;
 import us.dxtrus.api.models.dungeons.Dungeon;
 import us.dxtrus.api.server.base.survival.DungeonsInfoEndpoint;
 import us.dxtrus.api.server.errors.CommonResults;
@@ -19,34 +20,11 @@ import us.dxtrus.api.server.errors.CommonResults;
 @Path("/v1/survival/dungeons")
 public class DungeonsInfoEndpointV1 implements DungeonsInfoEndpoint {
     @Operation(
-            summary = "Gets information on a dungeon."
+            summary = "Gets information about a dungeon."
     )
     @ApiResponse(
             responseCode = "200",
-            description = "The dungeon information.",
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = Dungeon.class)
-            )
-    )
-    @ApiResponse(
-            responseCode = "400",
-            description = "The user was not found."
-    )
-    @GET
-    @Path("/{query}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Override
-    public Response getStats(@PathParam("query") String query) {
-        return null;
-    }
-
-    @Operation(
-            summary = "Gets a users information"
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "The users information.",
+            description = "The dungeon info.",
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = Dungeon.class)
@@ -64,6 +42,17 @@ public class DungeonsInfoEndpointV1 implements DungeonsInfoEndpoint {
         return CommonResults.NOT_FOUND("Dungeon not found with the name %s.".formatted(dungeon));
     }
 
+    @Operation(
+            summary = "Gets all the dungeons."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The dungeon info.",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(anyOf = Dungeon.class)
+            )
+    )
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
@@ -72,6 +61,17 @@ public class DungeonsInfoEndpointV1 implements DungeonsInfoEndpoint {
         return Response.ok("{}", MediaType.APPLICATION_JSON).build();
     }
 
+    @Operation(
+            summary = "Gets all the currently running dungeons."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The active dungeon info.",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(anyOf = ActiveDungeon.class)
+            )
+    )
     @GET
     @Path("/active")
     @Produces(MediaType.APPLICATION_JSON)

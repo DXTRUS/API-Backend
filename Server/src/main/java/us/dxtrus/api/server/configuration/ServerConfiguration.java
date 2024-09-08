@@ -11,6 +11,7 @@ import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 import us.dxtrus.api.server.database.DatabaseManager;
 import us.dxtrus.api.server.errors.NotFoundHandler;
+import us.dxtrus.api.server.v1.survival.DungeonsInfoEndpointV1;
 import us.dxtrus.api.server.v1.user.UserInfoEndpointV1;
 
 import java.util.HashSet;
@@ -34,7 +35,9 @@ public class ServerConfiguration extends Application {
 
         Set<Class<?>> classes = new HashSet<>();
         Stream.of(
+                // Version 1
                 UserInfoEndpointV1.class,
+                DungeonsInfoEndpointV1.class,
 
                 // Swagger api docs
                 SwaggerSerializers.class,
