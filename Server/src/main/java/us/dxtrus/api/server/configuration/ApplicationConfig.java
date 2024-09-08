@@ -84,10 +84,8 @@ public class ApplicationConfig {
         }
     }
 
-
     private static Path getConfigDirectory() {
-        String currentDirectory = System.getProperty("user.dir");
-        return Paths.get(currentDirectory).resolve("..").normalize();
+        return Paths.get("").toAbsolutePath().normalize();
     }
 
     public static void reload() {
